@@ -28,6 +28,7 @@ def rotate(shape_array):
 
 
 def _move(shape_array, times_x, times_y):
+    print(shape_array)
     return [[pair[0] + times_x, pair[1] + times_y] for pair in shape_array]
 
 

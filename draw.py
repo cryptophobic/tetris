@@ -18,7 +18,7 @@ class Draw:
         self._scene = scene
         self._scene_denominator = -1
         self.state = []
-        #self.draw_grid()
+        self.draw_grid()
 
     def _set_scene_denominator(self):
 
@@ -46,17 +46,16 @@ class Draw:
     def _scale(self, index):
         result = []
 
-        for item in self.state[index]:
-
+        for item in self.state[index]['shape']:
             result += [int(item[0]*self.get_scene_denominator() + self._move_vector[0]),
                        int(item[1]*self.get_scene_denominator() + self._move_vector[1])]
 
         return result
 
-    def _get_array_from_shape(self, shape_array):
-        result = []
+    def _check_and_get_index(self, coordinates, strict):
+        shape_candidate = []
 
-        for item in shape_array:
+        for item in coordinates:
             # if item[0] < 0:
             #     return self._get_array_from_shape(shapes.move_right(shape_array))
             # if item[0] > self._scene.width:
@@ -66,26 +65,12 @@ class Draw:
             # if item[1] >= self._scene.height:
             #     return self._get_array_from_shape(shapes.move_botttom(shape_array))
             if 0 <= item[0] < self._scene.width and 0 < item[1] < self._scene.height:
-                result.append(item)
-
-        return result
-
-    def _check_and_get_index(self, coordinates, index, strict):
-        if index >= len(self.state):
-            raise exception.UndefinedIndexError("index %d: is out of range" % index)
-
-        shape_candidate = self._get_array_from_shape(coordinates)
+                shape_candidate.append(item)
 
         if strict and len(shape_candidate) < len(coordinates):
             raise exception.OutOfRangeError("shape doesn't fit scene")
 
-        if index < 0:
-            self.state.append(shape_candidate)
-            index = len(self.state) - 1
-        else:
-            self.state[index] = shape_candidate
-
-        return index
+        return shape_candidate
 
     def draw_grid(self):
         dots = []
@@ -106,18 +91,30 @@ class Draw:
         glLoadIdentity()
 
         for index in range(len(self.state)):
-            self.draw_polygon(self.state[index], index)
+            self._draw(self.state[index]['type'], self.state[index]['shape'], index, False)
 
     def draw_dots(self, dots, index=-1, strict=False):
-        index = self._check_and_get_index(dots, index, strict)
-        scaled = self._scale(index)
-        pyglet.graphics.draw(len(scaled) // 2, pyglet.gl.GL_POINTS, ('v2i', scaled))
-
-        return index
+        return self._draw(pyglet.gl.GL_POINTS, dots, index, strict)
 
     def draw_polygon(self, polygon, index=-1, strict=False):
-        index = self._check_and_get_index(polygon, index, strict)
+        return self._draw(pyglet.gl.GL_POLYGON, polygon, index, strict)
+
+    def _draw(self, gl_type, shape, index, strict):
+        shape_candidate = self._check_and_get_index(shape, strict)
+        index = self._store_shape(shape_candidate, gl_type, index)
         scaled = self._scale(index)
-        pyglet.graphics.draw(len(scaled) // 2, pyglet.gl.GL_POLYGON, ('v2i', scaled))
+        pyglet.graphics.draw(len(scaled) // 2, gl_type, ('v2i', scaled))
 
         return index
+
+    def _store_shape(self, shape, gl_type, index):
+        if index >= len(self.state):
+            raise exception.UndefinedIndexError("index %d: is out of range" % index)
+        if index < 0:
+            self.state.append({'shape': shape, 'type': gl_type})
+            index = len(self.state) - 1
+        else:
+            self.state[index] = {'shape': shape, 'type': gl_type}
+
+        return index
+

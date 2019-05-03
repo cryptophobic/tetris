@@ -1,3 +1,5 @@
+from threading import Timer
+
 from pyglet.gl import *
 import exception
 import shapes
@@ -14,7 +16,7 @@ class Environment:
         self._scene = Scene(10, 20)
         self._draw_object = Draw(window, self._scene)
 
-        shape = shapes.move_top(shapes.move_right(shapes.shape_triple, 3), 4)
+        shape = shapes.move_top(shapes.move_right(shapes.shape_triple, 3), 15)
 
         self._shape = {'shape': shape, 'index': -1}
 
@@ -33,11 +35,16 @@ class Environment:
     def down(self):
         self._draw(shapes.move_botttom(self._shape['shape'], 1))
 
+    def tick(self, dt):
+        self.down()
+
     def _draw(self, shape_candidate):
         try:
             self._shape['index'] = self._draw_object.draw_polygon(shape_candidate, self._shape['index'], True)
             self._shape['shape'] = shape_candidate
         except exception.OutOfRangeError as e:
+            shape = shapes.move_top(shapes.move_right(shapes.shape_ge, 3), 15)
+            self._shape = {'shape': shape, 'index': -1}
             print(e)
 
     def refresh(self):

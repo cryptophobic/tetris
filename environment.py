@@ -21,7 +21,6 @@ class Environment:
 
     def _new_shape(self):
         shape_number = random.randint(0, len(shapes.shapes) - 1)
-        shape_number = 6
         shape = shapes.shapes[shape_number]
         shape_height = shapes.shape_height(shape)
 

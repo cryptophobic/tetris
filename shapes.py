@@ -10,6 +10,16 @@ shapes = [
     [[0, 0], [-2, 0], [-2, 1], [2, 1], [2, 0]],  # stick
 ]
 
+new_shapes = [
+    [[0, 0], [-1, 1], [-1, 0], [1, 0]],  # ge
+    [[0, 0], [-1, 0], [-1, -1], [1, 0]],  # reverted ge
+    [[0, 0], [-1, 0], [0, 1], [1, 0]],  # triple
+    [[0, 0], [0, 1], [1, 1], [1, 0]],  # square
+    [[0, 0], [-1, 0], [-1, -1], [0, 1]],  # twice
+    [[0, 0], [-1, 0], [-1, 1], [0, -1]],  # twice reverted
+    [[0, 0], [-1, 0], [1, 0], [2, 0]],  # stick
+]
+
 
 # https://www.math10.com/ru/vysshaya-matematika/matrix/umnozhenie-matric.html
 def rotate(shape_array):

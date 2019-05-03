@@ -21,16 +21,7 @@ def on_resize(width, height):
 
 
 def on_key_press(symbol, modifiers):
-    if symbol == pyglet.window.key.UP:
-        environment.up()
-    elif symbol == pyglet.window.key.DOWN:
-        environment.down()
-    elif symbol == pyglet.window.key.LEFT:
-        environment.left()
-    elif symbol == pyglet.window.key.RIGHT:
-        environment.right()
-    elif symbol == pyglet.window.key.SPACE:
-        environment.rotate()
+    environment.control(symbol)
 
 
 pyglet.clock.schedule_interval(environment.tick, 0.5)

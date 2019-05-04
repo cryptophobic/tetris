@@ -138,7 +138,6 @@ class Controller:
         return self._draw(shape_candidate, Draw.SQUARE, index, True)
 
     def refresh(self, batch):
-        print(self._trash.get_score())
         self._draw_object.draw_shape(self._trash.get_array(), batch)
         for item in self.state:
             if item['type'] == Draw.DOTS:
@@ -147,3 +146,5 @@ class Controller:
                 self._draw_object.draw_lines(item['shape'], batch)
             else:
                 self._draw_object.draw_shape(item['shape'], batch)
+
+        return self._trash.get_score()

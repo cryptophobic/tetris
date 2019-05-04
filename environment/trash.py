@@ -1,5 +1,6 @@
 from typing import List, Dict, Set
 from scene import Scene
+import time
 
 
 class Trash:
@@ -45,8 +46,9 @@ class Trash:
             if len(self._state[y]) == self._scene.width:
                 indices_to_del.append(y)
 
-        self._score += 10*len(indices_to_del)
+        self._score += 1*len(indices_to_del)
         denom = 0
         for index in indices_to_del:
             del self._state[index - denom]
             denom += 1
+

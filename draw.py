@@ -1,6 +1,6 @@
 from pyglet.gl import *
 from scene import Scene
-import exception
+from exceptions import exception
 
 
 class Draw:
@@ -61,12 +61,6 @@ class Draw:
 
     def resize(self):
         self._scene_denominator = -1
-
-    def draw_dots(self, dots):
-        return self.draw(pyglet.gl.GL_POINTS, dots)
-
-    def draw_polygon(self, polygon):
-        return self.draw(pyglet.gl.GL_POLYGON, polygon)
 
     def draw(self, gl_type, shape):
         scaled = self._scale(shape)

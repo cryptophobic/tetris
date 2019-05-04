@@ -1,23 +1,21 @@
 from pyglet.gl import *
 
-import shapes
-from environment import Environment
-
-
-# print(range(33))
-#
-# exit()
+from environment.controller import Controller
 
 window = pyglet.window.Window(resizable=True)
-environment = Environment(window)
+environment = Controller(window)
 
 
 def on_draw():
-    environment.refresh()
+    batch = pyglet.graphics.Batch()
+    environment.refresh(batch)
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    batch.draw()
 
 
-def on_resize(width, height):
-    environment.resize()
+#def on_resize(width, height):
+#    environment.resize()
 
 
 def on_key_press(symbol, modifiers):

@@ -123,7 +123,6 @@ class Controller:
                 shape_candidate = self._check_if_fits(shape_candidate, strict)
             index = self._store_shape(shape_candidate, gl_type, index)
         except exception.OutOfRangeError as e:
-            #print(e)
             return -1
 
         return index

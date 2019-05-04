@@ -16,6 +16,7 @@ label = pyglet.text.Label('',
 def on_draw():
     batch = pyglet.graphics.Batch()
     score = environment.refresh(batch)
+    label.y = window.height - 40
     label.text = str(score)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()

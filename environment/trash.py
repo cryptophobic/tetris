@@ -1,6 +1,7 @@
 from typing import List, Dict, Set
+
+from drawing.draw import Draw
 from scene import Scene
-import time
 
 
 class Trash:
@@ -25,7 +26,7 @@ class Trash:
 
         for y in range(len(self._state)):
             for x in self._state[y]:
-                result.append([x, y])
+                result.append({'type': Draw.SQUARE, 'shape': [[x, y]]})
 
         return result
 

@@ -34,3 +34,13 @@ class Draw:
         item = Item(scaled, self.DOTS)
         display.add(item, batch)
 
+    def draw_list(self, list_items: List, batch):
+        for item in list_items:
+            if item['type'] == Draw.DOTS:
+                self.draw_dots(item['shape'], batch)
+            elif item['type'] == Draw.LINE:
+                self.draw_lines(item['shape'], batch)
+            else:
+                self.draw_shape(item['shape'], batch)
+
+

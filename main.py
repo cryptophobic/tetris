@@ -32,7 +32,9 @@ def on_key_press(symbol, modifiers):
     environment.control(symbol)
 
 timeout = 0.5
-if len(sys.argv) > 0 and 0 < float(sys.argv[1]) < 1:
+
+
+if len(sys.argv) > 1 > float(sys.argv[1]) > 0:
     timeout = float(sys.argv[1])
 
 

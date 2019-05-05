@@ -1,45 +1,45 @@
 from pyglet.gl import *
-import sys
 
 from environment.controller import Controller
+from settings import Settings
 
 window = pyglet.window.Window(resizable=True)
 environment = Controller(window)
 
-label = pyglet.text.Label('',
-                          font_name='Arial',
-                          font_size=20,
-                          x=20, y=window.height - 40,
-                          anchor_x='left')
+score_label = pyglet.text.Label('', font_name='Arial', font_size=20, x=20, y=window.height - 40, anchor_x='left')
+level_label = pyglet.text.Label('', font_name='Arial', font_size=20, x=20, y=window.height - 70, anchor_x='left')
+settings = Settings()
 
 
 def on_draw():
     batch = pyglet.graphics.Batch()
     score = environment.refresh(batch)
-    label.y = window.height - 40
-    label.text = str(score)
+    score_label.text = "Score: " + str(score)
+    level_label.text = "Level: " + str(settings.level)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
     batch.draw()
-    label.draw()
+    score_label.draw()
+    level_label.draw()
+    if score >= (settings.limit * settings.level):
+        settings.level += 1
+        settings.timeout *= 2/3
+
+        print(settings.timeout)
+        pyglet.clock.unschedule(environment.tick)
+        pyglet.clock.schedule_interval(environment.tick, settings.timeout)
 
 
-#def on_resize(width, height):
+# def on_resize(width, height):
 #    environment.resize()
 
 
 def on_key_press(symbol, modifiers):
     environment.control(symbol)
 
-timeout = 0.5
 
-
-if len(sys.argv) > 1 > float(sys.argv[1]) > 0:
-    timeout = float(sys.argv[1])
-
-
-pyglet.clock.schedule_interval(environment.tick, timeout)
-#window.on_resize = on_resize
+pyglet.clock.schedule_interval(environment.tick, settings.timeout)
+# window.on_resize = on_resize
 window.on_draw = on_draw
 window.on_key_press = on_key_press
 pyglet.app.run()

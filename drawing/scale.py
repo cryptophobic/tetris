@@ -30,13 +30,36 @@ class Scale:
         # scene thin and tall
         if window_ratio > scene_ratio:
             self._scene_denominator = self._window.height / self._scene.height
-            x_move = int((self._window.width - self._scene_denominator * self._scene.width) / 2)
-            self._move_vector = [x_move, 0]
         # scene thick and short
         else:
             self._scene_denominator = self._window.width / self._scene.width
 
+        self._x_positioning(window_ratio, scene_ratio)
+        self._y_positioning(window_ratio, scene_ratio)
+
         self._window_size = self._window.get_size()
+
+    def _x_positioning(self, window_ratio: float, scene_ratio: float):
+        x_move = 0
+
+        if self._scene.x_position == Scene.CENTER and window_ratio > scene_ratio:
+            x_move = int((self._window.width - self._scene_denominator * self._scene.width) / 2)
+
+        if self._scene.x_position == Scene.RIGHT and window_ratio > scene_ratio:
+            x_move = int(self._window.width - self._scene_denominator * self._scene.width)
+
+        self._move_vector[0] = x_move
+
+    def _y_positioning(self, window_ratio: float, scene_ratio: float):
+        y_move = 0
+
+        if self._scene.y_position == Scene.CENTER and window_ratio < scene_ratio:
+            y_move = int((self._window.height - self._scene_denominator * self._scene.height) / 2)
+
+        if self._scene.y_position == Scene.TOP and window_ratio < scene_ratio:
+            y_move = int(self._window.height - self._scene_denominator * self._scene.height)
+
+        self._move_vector[1] = y_move
 
     def get_scene_denominator(self):
         if self._window.get_size() != self._window_size:

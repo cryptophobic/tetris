@@ -1,21 +1,15 @@
 from pyglet.gl import *
 
+from controller.base_controller import BaseController
 from environment.action import Action
-from exceptions import exception
-from drawing.draw import Draw
-from drawing.scale import Scale
 from scene import Scene
 from environment.objects import Objects
 
 
-class Controller:
+class BucketController(BaseController):
 
-    def __init__(self, window: pyglet.window.Window):
-        if not isinstance(window, pyglet.window.Window):
-            raise exception.IncorrectTypeError("window must be a pyglet.window.Window instance")
-
-        self._scene = Scene(10, 20)
-        self._draw_object = Draw(Scale(window, self._scene))
+    def __init__(self, window: pyglet.window.Window, scene: Scene):
+        BaseController.__init__(self, window, scene)
         self._objects = Objects(self._scene)
 
         self._draw_grid()
@@ -41,9 +35,9 @@ class Controller:
         self._objects.register_dots(dots)
 
     def _draw_boundaries(self):
-        self._objects.register_dots([[0, self._scene.height-1], [0, 1]])
-        self._objects.register_dots([[0, 1], [self._scene.width, 1]])
-        self._objects.register_dots([[self._scene.width, 1], [self._scene.width, self._scene.height-1]])
+        self._objects.register_lines([[0, self._scene.height-1], [0, 1]])
+        self._objects.register_lines([[0, 1], [self._scene.width, 1]])
+        self._objects.register_lines([[self._scene.width, 1], [self._scene.width, self._scene.height-1]])
 
     def refresh(self, batch):
         self._draw_object.draw_list(self._objects.get_array(), batch)

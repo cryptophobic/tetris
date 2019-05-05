@@ -1,11 +1,11 @@
 from pyglet.gl import *
 
-from environment.controller import Controller
+from controller.bucket_controller import BucketController
+from scene import Scene
 from settings import Settings
 
 window = pyglet.window.Window(resizable=True)
-environment = Controller(window)
-
+environment = BucketController(window, Scene(10, 20, Scene.CENTER))
 score_label = pyglet.text.Label('', font_name='Arial', font_size=20, x=20, y=window.height - 40, anchor_x='left')
 level_label = pyglet.text.Label('', font_name='Arial', font_size=20, x=20, y=window.height - 70, anchor_x='left')
 settings = Settings()

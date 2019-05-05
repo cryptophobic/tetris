@@ -14,6 +14,8 @@ settings = Settings()
 def on_draw():
     batch = pyglet.graphics.Batch()
     score = environment.refresh(batch)
+    score_label.y = window.height - 40
+    level_label.y = window.height - 70
     score_label.text = "Score: " + str(score)
     level_label.text = "Level: " + str(settings.level)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)

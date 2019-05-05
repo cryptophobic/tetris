@@ -21,7 +21,7 @@ class Objects:
         shape = shapes.shapes[shape_number]
         shape_height = shapes.shape_height(shape)
 
-        shape = shapes.move_top(shapes.move_right(shapes.shapes[shape_number], 3),
+        shape = shapes.move_top(shapes.move_right(shapes.shapes[shape_number], self._scene.width // 2),
                                 self._scene.height - shape_height - 1)
         return self.register_shape(shape)
 
@@ -95,7 +95,8 @@ class Objects:
         current_object = self._objects[object_id]
         object_candidate = current_object
         if action.action == Action.UP:
-            object_candidate = shapes.move_top(current_object['shape'], 1)
+            object_candidate = shapes.rotate(current_object['shape'])
+            # object_candidate = shapes.move_top(current_object['shape'], 1)
         if action.action == Action.LEFT:
             object_candidate = shapes.move_left(current_object['shape'], 1)
         if action.action == Action.RIGHT:

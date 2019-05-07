@@ -8,8 +8,10 @@ class Action:
     UP = 4
     DOWN = 8
     FIRE = 16
+    PAUSE = 32
 
     action_mapping = {
+        pyglet.window.key.ESCAPE: PAUSE,
         pyglet.window.key.LEFT: LEFT,
         pyglet.window.key.RIGHT: RIGHT,
         pyglet.window.key.UP: UP,

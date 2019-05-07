@@ -144,3 +144,6 @@ class Objects:
     def get_score(self):
         return self._trash.get_score()
 
+    def get_lines(self):
+        return self._trash.get_lines()
+

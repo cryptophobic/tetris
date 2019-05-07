@@ -12,16 +12,21 @@ class BucketController(BaseController):
         BaseController.__init__(self, window, scene)
         self._objects = Objects(self._scene)
 
+        self._paused = False
         self._draw_grid()
         self._draw_boundaries()
 
     def control(self, symbol: int):
         action = Action(symbol)
         if action.action is not None:
-            self._objects.perform_action(action)
+            if action.action == Action.PAUSE:
+                self._paused = True if self._paused == False else False
+            elif not self._paused:
+                self._objects.perform_action(action)
 
     def tick(self, dt):
-        self._objects.move_down()
+        if not self._paused:
+            self._objects.move_down()
 
     def _draw_grid(self):
         dots = []
@@ -41,4 +46,4 @@ class BucketController(BaseController):
 
     def refresh(self, batch):
         self._draw_object.draw_list(self._objects.get_array(), batch)
-        return self._objects.get_score()
+        return [self._objects.get_lines(), self._objects.get_score()]

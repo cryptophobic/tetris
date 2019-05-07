@@ -8,6 +8,7 @@ class Trash:
 
     def __init__(self, scene: Scene):
         self._score = 0
+        self._lines = 0
         self._scene = scene
         self._state = []  # type: List[Set[int]]
 
@@ -33,6 +34,9 @@ class Trash:
     def get_score(self):
         return self._score
 
+    def get_lines(self):
+        return self._lines
+
     def is_set(self, point: List):
         if point[1] < len(self._state) and point[0] in self._state[point[1]]:
             return True
@@ -47,7 +51,10 @@ class Trash:
             if len(self._state[y]) == self._scene.width:
                 indices_to_del.append(y)
 
-        self._score += 1*len(indices_to_del)
+        if len(indices_to_del) > 0:
+            self._score += (2*len(indices_to_del))-1
+            self._lines += len(indices_to_del)
+
         denom = 0
         for index in indices_to_del:
             del self._state[index - denom]

@@ -9,3 +9,7 @@ class IncorrectTypeError(Exception):
 
 class OutOfRangeError(Exception):
     pass
+
+
+class GameOverError(Exception):
+    pass

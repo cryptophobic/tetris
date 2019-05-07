@@ -7,8 +7,7 @@ from scene import Scene
 class Trash:
 
     def __init__(self, scene: Scene):
-        self._score = 0
-        self._lines = 0
+        self._score = self._lines = self._one = self._twix = self._triple = self._tetris = 0
         self._scene = scene
         self._state = []  # type: List[Set[int]]
 
@@ -21,6 +20,9 @@ class Trash:
             self._state[item[1]].add(item[0])
 
         self._check_solid_lines()
+
+    def clear(self):
+        self._state = []
 
     def get_array(self):
         result = []
@@ -37,6 +39,18 @@ class Trash:
     def get_lines(self):
         return self._lines
 
+    def get_one(self):
+        return self._one
+
+    def get_twix(self):
+        return self._twix
+
+    def get_triple(self):
+        return self._triple
+
+    def get_tetris(self):
+        return self._tetris
+
     def is_set(self, point: List):
         if point[1] < len(self._state) and point[0] in self._state[point[1]]:
             return True
@@ -52,8 +66,16 @@ class Trash:
                 indices_to_del.append(y)
 
         if len(indices_to_del) > 0:
-            self._score += (2*len(indices_to_del))-1
+            self._score += ((2*len(indices_to_del))-1) * (self._lines // 20 + 1)
             self._lines += len(indices_to_del)
+            if len(indices_to_del) == 4:
+                self._tetris += 1
+            if len(indices_to_del) == 3:
+                self._triple += 1
+            if len(indices_to_del) == 2:
+                self._twix += 1
+            if len(indices_to_del) == 1:
+                self._one += 1
 
         denom = 0
         for index in indices_to_del:

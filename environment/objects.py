@@ -14,7 +14,12 @@ class Objects:
         self._current_object_id = -1
         self._objects = []  # type: List[Dict[str, List or int]]
         self._scene = scene
+        self.game_over = False
         self._trash = Trash(self._scene)
+
+    def clear(self):
+        self._objects = []
+        self._trash.clear()
 
     def new_shape(self):
         shape_number = random.randint(0, len(shapes.shapes) - 1)
@@ -36,6 +41,8 @@ class Objects:
     def _obtain_object(self, object_id: int):
         if not self._get_object(object_id):
             self._current_object_id = object_id = self.new_shape()
+            if self._current_object_id == -1:
+                raise exception.GameOverError([self.get_score(), self.get_lines()])
 
         object_id = object_id if object_id > 0 else self._current_object_id
         return object_id
@@ -146,4 +153,16 @@ class Objects:
 
     def get_lines(self):
         return self._trash.get_lines()
+
+    def get_one(self):
+        return self._trash.get_one()
+
+    def get_twix(self):
+        return self._trash.get_twix()
+
+    def get_triple(self):
+        return self._trash.get_triple()
+
+    def get_tetris(self):
+        return self._trash.get_tetris()
 

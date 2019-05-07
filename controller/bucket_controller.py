@@ -2,6 +2,7 @@ from pyglet.gl import *
 
 from controller.base_controller import BaseController
 from environment.action import Action
+from exceptions import exception
 from scene import Scene
 from environment.objects import Objects
 
@@ -13,20 +14,39 @@ class BucketController(BaseController):
         self._objects = Objects(self._scene)
 
         self._paused = False
+        self.game_over = False
         self._draw_grid()
         self._draw_boundaries()
 
+    def re_init(self):
+        self._objects = Objects(self._scene)
+
+        self._paused = False
+        self.game_over = False
+        self._draw_grid()
+        self._draw_boundaries()
+
+    def clear(self):
+        self._objects.clear()
+
     def control(self, symbol: int):
         action = Action(symbol)
+
         if action.action is not None:
             if action.action == Action.PAUSE:
-                self._paused = True if self._paused == False else False
+                self._paused = True if not self._paused else False
             elif not self._paused:
-                self._objects.perform_action(action)
+                try:
+                    self._objects.perform_action(action)
+                except exception.GameOverError as e:
+                    self.game_over = True
 
     def tick(self, dt):
-        if not self._paused:
-            self._objects.move_down()
+        try:
+            if not self._paused:
+                self._objects.move_down()
+        except exception.GameOverError as e:
+            self.game_over = True
 
     def _draw_grid(self):
         dots = []
@@ -46,4 +66,7 @@ class BucketController(BaseController):
 
     def refresh(self, batch):
         self._draw_object.draw_list(self._objects.get_array(), batch)
-        return [self._objects.get_lines(), self._objects.get_score()]
+
+    def get_stats(self):
+        return [self._objects.get_lines(), self._objects.get_score(), self._objects.get_one(), self._objects.get_twix(),
+                self._objects.get_triple(), self._objects.get_tetris()]

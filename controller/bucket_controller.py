@@ -35,6 +35,8 @@ class BucketController(BaseController):
         if action.action is not None:
             if action.action == Action.PAUSE:
                 self._paused = True if not self._paused else False
+            elif action.action == Action.EXIT:
+                exit()
             elif not self._paused:
                 try:
                     self._objects.perform_action(action)

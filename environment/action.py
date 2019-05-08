@@ -9,14 +9,15 @@ class Action:
     DOWN = 8
     FIRE = 16
     PAUSE = 32
+    EXIT = 64
 
     action_mapping = {
-        pyglet.window.key.ESCAPE: PAUSE,
+        pyglet.window.key.SPACE: PAUSE,
         pyglet.window.key.LEFT: LEFT,
         pyglet.window.key.RIGHT: RIGHT,
         pyglet.window.key.UP: UP,
         pyglet.window.key.DOWN: DOWN,
-        pyglet.window.key.SPACE: FIRE
+        pyglet.window.key.ESCAPE: EXIT
     }
 
     def __init__(self, input_data: int):
